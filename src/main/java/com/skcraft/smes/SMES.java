@@ -19,7 +19,7 @@ public class SMES {
     @Mod.Instance("smes")
     public static SMES instance;
 
-    @SidedProxy(clientSide = "com.skcraft.smes.client.ClientProxy", serverSide="com.skcraft.smes.CommonProxy")
+    @SidedProxy(clientSide = "com.skcraft.smes.proxy.client.ClientProxy", serverSide="com.skcraft.smes.proxy.CommonProxy")
     public static CommonProxy proxy;
 
     public static Logger log;

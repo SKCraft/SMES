@@ -10,6 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import com.skcraft.smes.SMES;
 import com.skcraft.smes.impl.IToolTipProvider;
+import com.skcraft.smes.util.StringUtils;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -21,6 +22,7 @@ public class ItemPurifiable extends Item implements IToolTipProvider {
     
     @Override
     public void provideTooltip(ItemStack itemStack, EntityPlayer player, List<String> toolTip) {
+        toolTip.add(String.format(StringUtils.translate("purifiable.desc", true), itemStack.getTagCompound().getDouble(SMES.PREFIX + "purity")));
     }
     
     @Override
