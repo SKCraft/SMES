@@ -18,6 +18,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ItemPurifiable extends Item implements IToolTipProvider {
     public ItemPurifiable() {
         setHasSubtypes(true);
+        setCreativeTab(CreativeTabs.tabMaterials);
     }
     
     @Override
