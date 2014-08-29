@@ -9,8 +9,13 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
-@Mod(modid=SMESConstants.MOD_ID, name=SMESConstants.NAME)
+@Mod(modid = SMES.MOD_ID, name = SMES.NAME)
 public class SMES {
+    public static final String MOD_ID = "smes";
+    public static final String NAME = "SKCraft - SMES";
+    public static final String PREFIX = "smes.";
+    public static final String RSRC_PREFIX = "smes:";
+
     @Mod.Instance("smes")
     public static SMES instance;
 
