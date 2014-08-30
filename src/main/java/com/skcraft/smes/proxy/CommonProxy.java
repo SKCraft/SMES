@@ -1,6 +1,8 @@
 package com.skcraft.smes.proxy;
 
 import com.skcraft.smes.SMES;
+import com.skcraft.smes.item.SMESItems;
+
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -9,6 +11,9 @@ public class CommonProxy {
     public void preInit(FMLPreInitializationEvent evt) {
         SMES.log = evt.getModLog();
         SMES.log.info("Modulating pre-initialization phase...");
+        
+        SMESItems.preInit();
+        
         SMES.log.info("Pre-initialization phase concluded");
     }
 
