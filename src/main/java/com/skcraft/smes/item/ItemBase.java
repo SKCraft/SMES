@@ -18,7 +18,7 @@ public class ItemBase extends Item {
     
     @Override
     public Item setUnlocalizedName(String name) {
-        super.setUnlocalizedName(name);
+        super.setUnlocalizedName(SMES.PREFIX + name);
         return super.setTextureName(SMES.RSRC_PREFIX + name);
     }
 }

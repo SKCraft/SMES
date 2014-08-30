@@ -1,2 +1,5 @@
-item.smes.yttriumdust.name=Yttrium Dust
-smes.yttriumdust.desc=Purity %d%%
+item.smes.yttriumDust.name=Yttrium Dust
+
+smes.yttriumDust.desc=Purity %d%%
+
+itemGroup.tabSMES=SMES
