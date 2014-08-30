@@ -13,11 +13,11 @@ public class SMESItems {
     
     public static void preInit() {
         SMES.log.info("Initializing items...");
-        itemYttriumDust = new ItemPurifiable().setUnlocalizedName("yttriumDust");
+        itemYttriumDust = new ItemSMESDust().setUnlocalizedName("yttriumDust");
         registerItem(itemYttriumDust);
-        itemBariumDust = new ItemPurifiable().setUnlocalizedName("bariumDust");
+        itemBariumDust = new ItemSMESDust().setUnlocalizedName("bariumDust");
         registerItem(itemBariumDust);
-        itemNiobiumDust = new ItemPurifiable().setUnlocalizedName("niobiumDust");
+        itemNiobiumDust = new ItemSMESDust().setUnlocalizedName("niobiumDust");
         registerItem(itemNiobiumDust);
         SMES.log.info("Items initialized");
     }
