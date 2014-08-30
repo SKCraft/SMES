@@ -15,7 +15,7 @@ import com.skcraft.smes.util.StringUtils;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemPurifiable extends Item implements IToolTipProvider {
+public class ItemPurifiable extends ItemBase implements IToolTipProvider{
     public ItemPurifiable() {
         setHasSubtypes(true);
         setCreativeTab(CreativeTabs.tabMaterials);
