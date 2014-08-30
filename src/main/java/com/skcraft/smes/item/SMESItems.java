@@ -8,11 +8,17 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 public class SMESItems {
     public static Item itemYttriumDust;
+    public static Item itemBariumDust;
+    public static Item itemNiobiumDust;
     
     public static void preInit() {
         SMES.log.info("Initializing items...");
         itemYttriumDust = new ItemPurifiable().setUnlocalizedName("yttriumDust");
         registerItem(itemYttriumDust);
+        itemBariumDust = new ItemPurifiable().setUnlocalizedName("bariumDust");
+        registerItem(itemBariumDust);
+        itemNiobiumDust = new ItemPurifiable().setUnlocalizedName("niobiumDust");
+        registerItem(itemNiobiumDust);
         SMES.log.info("Items initialized");
     }
     

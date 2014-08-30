@@ -1,5 +1,7 @@
 item.smes.yttriumDust.name=Yttrium Dust
+item.smes.bariumDust.name=Barium Dust
+item.smes.niobiumDust.name=Niobium Dust
 
-smes.yttriumDust.desc=Purity %d%%
+smes.purifiable.desc=Purity %d%%
 
 itemGroup.tabSMES=SMES

@@ -22,9 +22,7 @@ public class ItemPurifiable extends ItemBase implements IToolTipProvider {
     
     @Override
     public void provideTooltip(ItemStack itemStack, EntityPlayer player, List<String> toolTip) {
-        String tooltip = itemStack.getUnlocalizedName().replace("item." + SMES.PREFIX, "") + ".desc";
-        
-        toolTip.add(String.format(StringUtils.translate(tooltip, true), 
+        toolTip.add(String.format(StringUtils.translate("purifiable.desc", true), 
                     itemStack.getTagCompound().getDouble(SMES.PREFIX + "purity")));
     }
     
