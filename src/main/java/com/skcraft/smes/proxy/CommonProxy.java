@@ -13,21 +13,20 @@ public class CommonProxy {
     public void preInit(FMLPreInitializationEvent evt) {
         SMES.log = evt.getModLog();
         SMES.log.info("Modulating pre-initialization phase...");
-        
         SMESItems.preInit();
-        
         SMES.log.info("Pre-initialization phase concluded");
     }
-    
+
     public void init(FMLInitializationEvent evt) {
         SMES.log.info("Modulating initialization phase...");
         SMES.proxy.registerHandlers();
         SMES.log.info("Main intializaiton phase concluded");
     }
-    
+
     public void registerHandlers() {
         SMES.log.info("Registering handlers...");
         NetworkRegistry.INSTANCE.registerGuiHandler(SMES.instance, new GuiHandler());
+        SMES.log.info("Registering common handlers...");
     }
 
     public void postInit(FMLPostInitializationEvent evt) {
