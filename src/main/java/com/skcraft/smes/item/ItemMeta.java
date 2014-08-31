@@ -121,7 +121,7 @@ public class ItemMeta extends ItemBase implements IToolTipProvider, IPurifiable 
     @Override
     public ItemStack enablePurity(ItemStack itemStack) {
         NBTTagCompound nbtTagCompound = new NBTTagCompound();
-        nbtTagCompound.setDouble("purity", 0.000000000D);
+        nbtTagCompound.setDouble("purity", 0.550000000D);
         itemStack.setTagCompound(nbtTagCompound);
         return itemStack;
     }
