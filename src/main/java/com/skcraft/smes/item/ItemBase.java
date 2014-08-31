@@ -13,9 +13,9 @@ import com.skcraft.smes.util.StringUtils;
 
 public class ItemBase extends Item {
     public ItemBase() {
-        setCreativeTab(SMESCreativeTab.tab);
+        setCreativeTab(SMES.tabSMES);
     }
-    
+
     @Override
     public Item setUnlocalizedName(String name) {
         super.setUnlocalizedName(SMES.PREFIX + name);

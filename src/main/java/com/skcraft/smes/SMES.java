@@ -23,6 +23,7 @@ public class SMES {
     public static CommonProxy proxy;
 
     public static Logger log;
+    public static SMESCreativeTab tabSMES = new SMESCreativeTab();
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent evt) {
