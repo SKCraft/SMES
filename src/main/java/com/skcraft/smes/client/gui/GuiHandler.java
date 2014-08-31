@@ -8,7 +8,7 @@ import com.skcraft.smes.tileentity.TileEntityBase;
 
 import cpw.mods.fml.common.network.IGuiHandler;
 
-public class SMESGuiHandler implements IGuiHandler {
+public class GuiHandler implements IGuiHandler {
     public static final int MACHINE = 0;
     
     @Override

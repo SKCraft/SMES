@@ -1,7 +1,7 @@
 package com.skcraft.smes.proxy;
 
 import com.skcraft.smes.SMES;
-import com.skcraft.smes.client.gui.SMESGuiHandler;
+import com.skcraft.smes.client.gui.GuiHandler;
 import com.skcraft.smes.item.SMESItems;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -27,7 +27,7 @@ public class CommonProxy {
     
     public void registerHandlers() {
         SMES.log.info("Registering handlers...");
-        NetworkRegistry.INSTANCE.registerGuiHandler(SMES.instance, new SMESGuiHandler());
+        NetworkRegistry.INSTANCE.registerGuiHandler(SMES.instance, new GuiHandler());
     }
 
     public void postInit(FMLPostInitializationEvent evt) {
