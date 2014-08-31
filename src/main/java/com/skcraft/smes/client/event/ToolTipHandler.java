@@ -12,11 +12,11 @@ public class ToolTipHandler {
     public void onToolTip(ItemTooltipEvent evt) {
         Item item = evt.itemStack.getItem();
         if (item instanceof IToolTipProvider) {
-            ((IToolTipProvider)item).provideTooltip(evt.itemStack, evt.entityPlayer, evt.toolTip);
+            ((IToolTipProvider)item).provideToolTip(evt.itemStack, evt.entityPlayer, evt.toolTip);
         } else if (item instanceof ItemBlock) {
             Block block = Block.getBlockFromItem(item);
             if (block instanceof IToolTipProvider) {
-                ((IToolTipProvider)block).provideTooltip(evt.itemStack, evt.entityPlayer, evt.toolTip);
+                ((IToolTipProvider)block).provideToolTip(evt.itemStack, evt.entityPlayer, evt.toolTip);
             }
         }
     }
