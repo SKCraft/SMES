@@ -45,8 +45,12 @@ public class ItemMeta extends ItemBase implements IPurifiable {
             SMES.log.info("Shit's purifiable, yo");
         if (index > this.highestMeta)
             this.highestMeta = index;
+        if (registerCustomItemStack)
+            GameRegistry.registerCustomItemStack(item.name, itemStack);
+        if (registerOreDict)
+            OreDictionary.registerOre(item.name, itemStack);
 
-        return registerStackAndDict(itemStack, registerCustomItemStack, registerOreDict);
+        return itemStack;
     }
 
     public MetaItem getMetaItem(ItemStack itemStack) {
@@ -106,16 +110,6 @@ public class ItemMeta extends ItemBase implements IPurifiable {
     @Override
     public IIcon getIconFromDamage(int damage) {
         return this.icons.get(damage);
-    }
-
-    private ItemStack registerStackAndDict(ItemStack itemStack, boolean registerCustomItemStack, boolean registerOreDict) {
-        MetaItem item = getMetaItem(itemStack);
-        if (registerCustomItemStack)
-            GameRegistry.registerCustomItemStack(item.name, itemStack);
-        if (registerOreDict)
-            OreDictionary.registerOre(item.name, itemStack);
-
-        return itemStack;
     }
 
     public static class MetaItem {
