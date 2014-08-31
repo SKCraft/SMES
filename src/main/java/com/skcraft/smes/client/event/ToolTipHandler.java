@@ -1,6 +1,6 @@
 package com.skcraft.smes.client.event;
 
-import com.skcraft.smes.impl.IToolTipProvider;
+import com.skcraft.smes.client.impl.IToolTipProvider;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
