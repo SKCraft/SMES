@@ -21,7 +21,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.block.IDismantleable;
 
 import com.skcraft.smes.SMES;
-import com.skcraft.smes.SMESCreativeTab;
 import com.skcraft.smes.tileentity.TileEntityBase;
 
 import cpw.mods.fml.relauncher.Side;
@@ -30,15 +29,15 @@ import cpw.mods.fml.relauncher.SideOnly;
 public abstract class BlockMachineBase extends BlockContainer implements IDismantleable {
     private IIcon[] iconsIdle = new IIcon[6];
     private IIcon[] iconsActive = new IIcon[6];
-    
+
     public BlockMachineBase(Material material) {
         super(material);
-        setCreativeTab(SMESCreativeTab.tab);
+        setCreativeTab(SMES.tabSMES);
         setHardness(2.5F);
         setHarvestLevel("pickaxe", 2);
         setStepSound(soundTypeMetal);
     }
-    
+
     /* Temporary! May need to make some better, cleaner way */
     @Override
     @SideOnly(Side.CLIENT)
@@ -56,7 +55,7 @@ public abstract class BlockMachineBase extends BlockContainer implements IDisman
         this.iconsActive[4] = register.registerIcon(SMES.RSRC_PREFIX + "machine." + this.getUnlocalizedName().replace("tile." + SMES.RSRC_PREFIX, "") + ".active.left");
         this.iconsActive[5] = register.registerIcon(SMES.RSRC_PREFIX + "machine." + this.getUnlocalizedName().replace("tile." + SMES.RSRC_PREFIX, "") + ".active.right");
     }
-    
+
     @Override
     public IIcon getIcon(IBlockAccess blockAccess, int x, int y, int z, int blockSide) {
         TileEntity tile = blockAccess.getTileEntity(x, y, z);
@@ -67,12 +66,12 @@ public abstract class BlockMachineBase extends BlockContainer implements IDisman
         }
         return isActive ? this.iconsActive[blockSide] : this.iconsIdle[blockSide];
     }
-    
+
     @Override
     public int damageDropped(int metadata) {
         return metadata;
     }
-    
+
     @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack) {
         if (entity == null) {
@@ -168,7 +167,7 @@ public abstract class BlockMachineBase extends BlockContainer implements IDisman
         }
         return false;
     }
-    
+
     @Override
     public Block setBlockName(String name) {
         super.setBlockName(SMES.PREFIX + name);
@@ -176,13 +175,13 @@ public abstract class BlockMachineBase extends BlockContainer implements IDisman
     }
 
     /* IDismanteable */
-    
+
     @Override
     public ArrayList<ItemStack> dismantleBlock(EntityPlayer player, World world, int x, int y, int z, boolean returnDrops) {
         TileEntity tile = world.getTileEntity(x, y, z);
         if (tile instanceof TileEntityBase) {
             ArrayList<ItemStack> drops = new ArrayList<ItemStack>();
-            
+
             ItemStack machine = new ItemStack(this);
             drops.add(machine);
             drops.addAll(((TileEntityBase) tile).getDropItems());
@@ -199,9 +198,9 @@ public abstract class BlockMachineBase extends BlockContainer implements IDisman
     public boolean canDismantle(EntityPlayer player, World world, int x, int y, int z) {
         return world.getTileEntity(x, y, z) instanceof TileEntityBase;
     }
-    
+
     /* Block Container */
-    
+
     @Override
     public TileEntity createNewTileEntity(World world, int metadata) {
         return null;
