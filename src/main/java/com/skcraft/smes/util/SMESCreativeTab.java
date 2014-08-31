@@ -1,9 +1,8 @@
 package com.skcraft.smes.util;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-
-import com.skcraft.smes.item.SMESItems;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -16,7 +15,7 @@ public class SMESCreativeTab extends CreativeTabs {
     @Override
     @SideOnly(Side.CLIENT)
     public Item getTabIconItem() {
-        return SMESItems.itemYttriumDust;
+        return Items.redstone;
     }
 
 }
