@@ -17,7 +17,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemPurifiable extends ItemBase implements IToolTipProvider {
     @Override
-    public void provideTooltip(ItemStack itemStack, EntityPlayer player, List<String> toolTip) {
+    public void provideToolTip(ItemStack itemStack, EntityPlayer player, List<String> toolTip) {
         toolTip.add(String.format(StringUtils.translate("purifiable.desc", true),
                     itemStack.getTagCompound().getDouble(SMES.PREFIX + "purity")));
     }

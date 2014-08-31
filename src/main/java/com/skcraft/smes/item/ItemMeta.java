@@ -71,7 +71,12 @@ public class ItemMeta extends ItemBase implements IToolTipProvider, IPurifiable 
     public void getSubItems(Item item, CreativeTabs tab, List list) {
         for (Map.Entry<Integer, MetaItem> metaItemEntry : metaItems.entrySet()) {
             if (metaItemEntry.getValue() != null) {
-                list.add(new ItemStack(item, 1, metaItemEntry.getKey()));
+                ItemStack itemStack = new ItemStack(item, 1, metaItemEntry.getKey());
+                if (metaItemEntry.getValue().purifiable) {
+                    enablePurity(itemStack);
+                }
+                
+                list.add(itemStack);
             }
         }
     }
