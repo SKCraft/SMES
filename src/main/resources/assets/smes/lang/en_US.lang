@@ -1,6 +1,6 @@
-item.smes.yttriumDust.name=Yttrium Dust
-item.smes.bariumDust.name=Barium Dust
-item.smes.niobiumDust.name=Niobium Dust
+item.smes.dustYttrium.name=Yttrium Dust
+item.smes.dustBarium.name=Barium Dust
+item.smes.dustNiobium.name=Niobium Dust
 
 smes.purifiable.desc=Purity %d%%
 
