@@ -53,6 +53,12 @@ public class ItemMeta extends ItemBase implements IPurifiable {
         return this.metaItems.get(itemStack.getItemDamage());
     }
 
+    @Override
+    public String getUnlocalizedName(ItemStack itemStack) {
+        MetaItem metaItem = this.getMetaItem(itemStack);
+        return metaItem != null ? "item." + SMES.PREFIX + metaItem.name : super.getUnlocalizedName();
+    }
+
     @SuppressWarnings("unchecked")
     @SideOnly(Side.CLIENT)
     @Override
@@ -104,7 +110,6 @@ public class ItemMeta extends ItemBase implements IPurifiable {
 
     private ItemStack registerStackAndDict(ItemStack itemStack, boolean registerCustomItemStack, boolean registerOreDict) {
         MetaItem item = getMetaItem(itemStack);
-        SMES.log.info(item.name);
         if (registerCustomItemStack)
             GameRegistry.registerCustomItemStack(item.name, itemStack);
         if (registerOreDict)
