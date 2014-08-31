@@ -1,6 +1,7 @@
 package com.skcraft.smes;
 
 import com.skcraft.smes.proxy.CommonProxy;
+import com.skcraft.smes.util.SMESCreativeTab;
 import org.apache.logging.log4j.Logger;
 
 import cpw.mods.fml.common.Mod;

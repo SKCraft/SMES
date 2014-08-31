@@ -1,4 +1,4 @@
-package com.skcraft.smes;
+package com.skcraft.smes.util;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -9,7 +9,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class SMESCreativeTab extends CreativeTabs {
-    protected SMESCreativeTab() {
+    public SMESCreativeTab() {
         super("tabSMES");
     }
 
