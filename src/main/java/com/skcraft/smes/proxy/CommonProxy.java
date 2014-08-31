@@ -19,7 +19,9 @@ public class CommonProxy {
 
     public void init(FMLInitializationEvent evt) {
         SMES.log.info("Modulating initialization phase...");
+
         SMES.proxy.registerHandlers();
+
         SMES.log.info("Main intializaiton phase concluded");
     }
 
