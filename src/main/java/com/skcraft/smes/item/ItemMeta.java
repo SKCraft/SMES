@@ -24,12 +24,9 @@ import java.util.Map;
 public class ItemMeta extends ItemBase implements IToolTipProvider, IPurifiable {
     private Map<Integer, MetaItem> metaItems = new HashMap<Integer, MetaItem>();
     private int highestMeta = 0;
-    private final String fallbackName;
     private Map<Integer, IIcon> icons = new HashMap<Integer, IIcon>();
 
     public ItemMeta(String fallbackName) {
-        this.fallbackName = fallbackName;
-
         this.setUnlocalizedName(fallbackName);
         this.setHasSubtypes(true);
         this.setMaxDamage(0);
@@ -75,7 +72,6 @@ public class ItemMeta extends ItemBase implements IToolTipProvider, IPurifiable 
                 if (metaItemEntry.getValue().purifiable) {
                     enablePurity(itemStack);
                 }
-                
                 list.add(itemStack);
             }
         }
@@ -125,7 +121,7 @@ public class ItemMeta extends ItemBase implements IToolTipProvider, IPurifiable 
     @Override
     public ItemStack enablePurity(ItemStack itemStack) {
         NBTTagCompound nbtTagCompound = new NBTTagCompound();
-        nbtTagCompound.setDouble("purity", 0.000000000);
+        nbtTagCompound.setDouble("purity", 0.000000000D);
         itemStack.setTagCompound(nbtTagCompound);
         return itemStack;
     }
