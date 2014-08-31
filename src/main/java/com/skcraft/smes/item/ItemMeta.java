@@ -1,6 +1,7 @@
 package com.skcraft.smes.item;
 
 import com.skcraft.smes.SMES;
+import com.skcraft.smes.client.impl.IToolTipProvider;
 import com.skcraft.smes.item.impl.IPurifiable;
 import com.skcraft.smes.util.StringUtils;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -12,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -19,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ItemMeta extends ItemBase implements IPurifiable {
+public class ItemMeta extends ItemBase implements IToolTipProvider, IPurifiable {
     private Map<Integer, MetaItem> metaItems = new HashMap<Integer, MetaItem>();
     private int highestMeta = 0;
     private final String fallbackName;
@@ -42,7 +44,7 @@ public class ItemMeta extends ItemBase implements IPurifiable {
         ItemStack itemStack = new ItemStack(this, 1, index);
 
         if (item.purifiable)
-            SMES.log.info("Shit's purifiable, yo");
+            enablePurity(itemStack);
         if (index > this.highestMeta)
             this.highestMeta = index;
         if (registerCustomItemStack)
@@ -85,15 +87,18 @@ public class ItemMeta extends ItemBase implements IPurifiable {
     }
 
     @SuppressWarnings("unchecked")
-    @SideOnly(Side.CLIENT)
     @Override
-    public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean par4) {
+    public void provideToolTip(ItemStack itemStack, EntityPlayer player, List toolTipLines) {
         MetaItem metaItem = this.getMetaItem(itemStack);
-        if (metaItem != null && metaItem.tooltipLines.length > 0) {
-            for (String tooltip : metaItem.tooltipLines) {
-                list.add(StringUtils.translate(tooltip));
+        if (metaItem == null)
+            return;
+        if (metaItem.toolTipLines.length > 0) {
+            for (String toolTip : metaItem.toolTipLines) {
+                toolTipLines.add(StringUtils.translate(toolTip));
             }
         }
+        if (metaItem.purifiable && itemStack.hasTagCompound())
+            toolTipLines.add(String.format(StringUtils.translate("purifiable.desc", true), itemStack.getTagCompound().getDouble("purity")));
     }
 
     @SideOnly(Side.CLIENT)
@@ -112,15 +117,23 @@ public class ItemMeta extends ItemBase implements IPurifiable {
         return this.icons.get(damage);
     }
 
+    @Override
+    public ItemStack enablePurity(ItemStack itemStack) {
+        NBTTagCompound nbtTagCompound = new NBTTagCompound();
+        nbtTagCompound.setDouble("purity", 0.000000000);
+        itemStack.setTagCompound(nbtTagCompound);
+        return itemStack;
+    }
+
     public static class MetaItem {
         public String name;
-        public String[] tooltipLines;
+        public String[] toolTipLines;
         public EnumRarity rarity;
         public boolean purifiable;
 
-        public MetaItem(String name, String[] tooltipLines, EnumRarity rarity, boolean purifiable) {
+        public MetaItem(String name, String[] toolTipLines, EnumRarity rarity, boolean purifiable) {
             this.name = name;
-            this.tooltipLines = tooltipLines != null ? tooltipLines : new String[0];
+            this.toolTipLines = toolTipLines != null ? toolTipLines : new String[0];
             this.rarity = rarity;
             this.purifiable = purifiable;
         }
