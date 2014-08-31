@@ -27,9 +27,9 @@ public class SMESItems {
 
         itemDusts = new ItemMeta("dust");
 
-        dustYttrium = itemDusts.addMetaItem(0, new ItemMeta.MetaItem("dustYtrrium", null, EnumRarity.common, true), true, false);
-        dustBarium = itemDusts.addMetaItem(1, new ItemMeta.MetaItem("dustBarium", null, EnumRarity.common, true), true, false);
-        dustNiobium = itemDusts.addMetaItem(2, new ItemMeta.MetaItem("dustNiobium", null, EnumRarity.common, true), true, false);
+        dustYttrium = itemDusts.addMetaItem(0, new ItemMeta.MetaItem("dustYtrrium", null, EnumRarity.common, true), true, true);
+        dustBarium = itemDusts.addMetaItem(1, new ItemMeta.MetaItem("dustBarium", null, EnumRarity.common, true), true, true);
+        dustNiobium = itemDusts.addMetaItem(2, new ItemMeta.MetaItem("dustNiobium", null, EnumRarity.common, true), true, true);
 
         SMES.log.info("Items created");
     }
