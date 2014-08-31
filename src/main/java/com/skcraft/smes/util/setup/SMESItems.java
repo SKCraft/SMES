@@ -39,27 +39,4 @@ public class SMESItems {
     }
 
     private static void registerRecipes() {}
-//    public static Item itemYttriumDust;
-//    public static Item itemBariumDust;
-//    public static Item itemNiobiumDust;
-//
-//    public static void preInit() {
-//        SMES.log.info("Initializing items...");
-//        itemYttriumDust = new ItemSMESDust().setUnlocalizedName("dustYttrium");
-//        registerItem(itemYttriumDust);
-//        itemBariumDust = new ItemSMESDust().setUnlocalizedName("dustBarium");
-//        registerItem(itemBariumDust);
-//        itemNiobiumDust = new ItemSMESDust().setUnlocalizedName("dustNiobium");
-//        registerItem(itemNiobiumDust);
-//        SMES.log.info("Items initialized");
-//    }
-//
-//    private static void registerItem(Item item, String suffix) {
-//        String name = item.getUnlocalizedName().replace("item." + SMES.PREFIX, "") + suffix;
-//        GameRegistry.registerItem(item, name);
-//    }
-//
-//    private static void registerItem(Item item) {
-//        registerItem(item, "");
-//    }
 }
