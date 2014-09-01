@@ -8,6 +8,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.tileentity.IReconfigurableSides;
 
+import com.skcraft.smes.client.gui.GuiRareMetalExtractor;
+import com.skcraft.smes.inventory.container.ContainerRareMetalExtractor;
 import com.skcraft.smes.recipes.RareMetalExtractorRecipes;
 import com.skcraft.smes.util.StringUtils;
 
@@ -76,15 +78,13 @@ public class TileEntityRareMetalExtractor extends TileEntityEnergyInventory impl
 
     @Override
     public Container getContainer(InventoryPlayer invPlayer) {
-        //return new ContainerRareMetalExtractor(this, invPlayer);
-        return null;
+        return new ContainerRareMetalExtractor(this, invPlayer);
     }
     
     @Override
     @SideOnly(Side.CLIENT)
     public GuiContainer getGui(InventoryPlayer invPlayer) {
-        //return new GuiRareMetalExtractor(this, invPlayer);
-        return null;
+        return new GuiRareMetalExtractor(this, invPlayer);
     }
     
     private boolean canProcess() {

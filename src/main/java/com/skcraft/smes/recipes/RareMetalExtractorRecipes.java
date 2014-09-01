@@ -6,7 +6,7 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import com.skcraft.smes.item.SMESItems;
+import com.skcraft.smes.util.setup.SMESItems;
 
 public class RareMetalExtractorRecipes {
     private static List<IEnergyRecipe> recipes = new ArrayList<IEnergyRecipe>();
@@ -59,7 +59,7 @@ public class RareMetalExtractorRecipes {
     public static void postInit() {
         if (!didPostInit) {
             // Add recipes here!
-            addDictionaryRecipe("sapling", 1400, new ItemStack(SMESItems.itemYttriumDust), 1400000);
+            addDictionaryRecipe("sapling", 1400, SMESItems.dustYttrium, 1400000);
             
             didPostInit = true;
         }

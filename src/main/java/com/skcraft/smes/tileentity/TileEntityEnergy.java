@@ -57,7 +57,7 @@ public abstract class TileEntityEnergy extends TileEntityBase implements IEnergy
         this.battery.setEnergyStored(energy);
     }
     
-    protected EnergyStorage getBattery() {
+    public EnergyStorage getBattery() {
         return this.battery;
     }
 

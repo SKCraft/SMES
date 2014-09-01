@@ -2,6 +2,7 @@ package com.skcraft.smes.proxy;
 
 import com.skcraft.smes.SMES;
 import com.skcraft.smes.client.gui.GuiHandler;
+import com.skcraft.smes.util.setup.SMESBlocks;
 import com.skcraft.smes.util.setup.SMESItems;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -14,12 +15,15 @@ public class CommonProxy {
         SMES.log = evt.getModLog();
         SMES.log.info("Modulating pre-initialization phase...");
         SMESItems.preInit();
+        SMESBlocks.preInit();
         SMES.log.info("Pre-initialization phase concluded");
     }
 
     public void init(FMLInitializationEvent evt) {
         SMES.log.info("Modulating initialization phase...");
         SMES.proxy.registerHandlers();
+        SMESItems.init();
+        SMESBlocks.init();
         SMES.log.info("Main intializaiton phase concluded");
     }
 
