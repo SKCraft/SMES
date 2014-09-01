@@ -4,8 +4,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.IEnergyContainerItem;
 import cofh.lib.gui.slot.SlotEnergy;
 import cofh.lib.gui.slot.SlotRemoveOnly;
@@ -14,6 +16,9 @@ import com.skcraft.smes.inventory.container.slot.SlotMultipleValid;
 import com.skcraft.smes.inventory.container.slot.validators.ValidatorOreDictionary;
 import com.skcraft.smes.recipes.RareMetalExtractorRecipes;
 import com.skcraft.smes.tileentity.TileEntityRareMetalExtractor;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class ContainerRareMetalExtractor extends Container {
     private TileEntityRareMetalExtractor tileEntity;
@@ -41,6 +46,36 @@ public class ContainerRareMetalExtractor extends Container {
         }
         for (int i = 0; i < 9; i++) {
             this.addSlotToContainer(new Slot(inventory, i, xOffset + i * 18, yOffset + 58));
+        }
+    }
+    
+    @Override
+    public void detectAndSendChanges() {
+        super.detectAndSendChanges();
+
+        int energy = this.tileEntity.getEnergyStored(ForgeDirection.UNKNOWN);
+
+        for (int i = 0; i < this.crafters.size(); ++i) {
+            ICrafting crafting = (ICrafting) this.crafters.get(i);
+
+            crafting.sendProgressBarUpdate(this, 0, this.tileEntity.getCurrentRequiredEnergy());
+            crafting.sendProgressBarUpdate(this, 1, this.tileEntity.getProcessingEnergy());
+            crafting.sendProgressBarUpdate(this, 2, energy);
+        }
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void updateProgressBar(int barId, int value) {
+        switch (barId) {
+        case 0:
+            this.tileEntity.setCurrentRequiredEnergy(value);
+            break;
+        case 1:
+            this.tileEntity.setProcessingEnergy(value);
+            break;
+        case 2:
+            this.tileEntity.setEnergyStored(value);
         }
     }
 

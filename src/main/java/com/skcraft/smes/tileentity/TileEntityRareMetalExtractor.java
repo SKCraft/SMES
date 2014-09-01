@@ -151,6 +151,22 @@ public class TileEntityRareMetalExtractor extends TileEntityEnergyInventory impl
         return true;
     }
     
+    public int getCurrentRequiredEnergy() {
+        return this.currentEnergyRequired;
+    }
+    
+    public int getProcessingEnergy() {
+        return this.processingEnergy;
+    }
+    
+    public void setProcessingEnergy(int energy) {
+        this.processingEnergy = energy;
+    }
+    
+    public void setCurrentRequiredEnergy(int energy) {
+        this.currentEnergyRequired = energy;
+    }
+    
     /* ISidedInventory */
 
     /**
