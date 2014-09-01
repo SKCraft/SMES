@@ -6,6 +6,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
+import cofh.api.energy.IEnergyContainerItem;
 import cofh.api.tileentity.IReconfigurableSides;
 
 import com.skcraft.smes.client.gui.GuiRareMetalExtractor;
@@ -25,7 +26,7 @@ public class TileEntityRareMetalExtractor extends TileEntityEnergyInventory impl
     private int energyPerTick = 1000;
     
     public TileEntityRareMetalExtractor() {
-        super(batteryCapacity, 2);
+        super(batteryCapacity, 3);
     }
     
     @Override
@@ -47,6 +48,12 @@ public class TileEntityRareMetalExtractor extends TileEntityEnergyInventory impl
                 }
             } else {
                 this.processingEnergy = -1;
+            }
+            
+            if (this.getInventory()[2] != null && this.getInventory()[2].getItem() instanceof IEnergyContainerItem) {
+                int maxExtract = this.getBattery().getMaxEnergyStored() - this.getBattery().getEnergyStored();
+                int energy = ((IEnergyContainerItem) this.getInventory()[2].getItem()).extractEnergy(this.getInventory()[2], maxExtract, false);
+                this.getBattery().receiveEnergy(energy, false);
             }
         }
 

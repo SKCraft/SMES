@@ -14,7 +14,7 @@ public class ValidatorOreDictionary implements ISlotValidator {
     }
     
     @Override
-    public boolean isItemValid(ItemStack stack) {
+    public boolean isItemValid(ItemStack itemStack) {
         return this.itemStack.isItemEqual(query.set(itemStack));
     }
 

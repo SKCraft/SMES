@@ -21,6 +21,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.block.IDismantleable;
 
 import com.skcraft.smes.SMES;
+import com.skcraft.smes.client.gui.GuiHandler;
 import com.skcraft.smes.tileentity.TileEntityBase;
 
 import cpw.mods.fml.relauncher.Side;
@@ -112,7 +113,7 @@ public abstract class BlockMachineBase extends BlockContainer implements IDisman
             return false;
         } else if (tile instanceof TileEntityBase && ((TileEntityBase) tile).getContainer(player.inventory) != null) {
             if (!world.isRemote) {
-                //player.openGui(SMES.instance, SMESGuiHandler.MACHINE, world, x, y, z);
+                player.openGui(SMES.instance, GuiHandler.MACHINE, world, x, y, z);
             }
             return true;
         }

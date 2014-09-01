@@ -50,6 +50,11 @@ public class RareMetalExtractorRecipes {
         IEnergyRecipe recipe = getRecipe(input);
         return recipe != null ? recipe.getInput().stackSize : 0;
     }
+    
+    public static boolean isValidInput(ItemStack input) {
+        IEnergyRecipe recipe = getRecipe(input);
+        return recipe != null;
+    }
 
     public static int getEnergyRequired(ItemStack input) {
         IEnergyRecipe recipe = getRecipe(input);

@@ -27,13 +27,13 @@ public class SlotMultipleValid extends SlotValidated {
     public boolean isItemValid(ItemStack stack) {
         for(ISlotValidator validator : this.validators) {
             if (validator.isItemValid(stack)) {
-                if (!and) {
+                if (!this.and) {
                     return true;
                 }
             } else if (this.and) {
                 return false;
             }
         }
-        return true;
+        return this.and;
     }
 }

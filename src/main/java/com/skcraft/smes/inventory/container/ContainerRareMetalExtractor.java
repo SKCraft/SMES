@@ -6,10 +6,13 @@ import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import cofh.api.energy.IEnergyContainerItem;
+import cofh.lib.gui.slot.SlotEnergy;
 import cofh.lib.gui.slot.SlotRemoveOnly;
 
 import com.skcraft.smes.inventory.container.slot.SlotMultipleValid;
 import com.skcraft.smes.inventory.container.slot.validators.ValidatorOreDictionary;
+import com.skcraft.smes.recipes.RareMetalExtractorRecipes;
 import com.skcraft.smes.tileentity.TileEntityRareMetalExtractor;
 
 public class ContainerRareMetalExtractor extends Container {
@@ -17,10 +20,28 @@ public class ContainerRareMetalExtractor extends Container {
     
     public ContainerRareMetalExtractor(TileEntityRareMetalExtractor tileEntity, InventoryPlayer inventory) {
         this.tileEntity = tileEntity;
-        this.addSlotToContainer(new SlotMultipleValid(inventory, 0, 10, 10, false)
+        // Input slot
+        this.addSlotToContainer(new SlotMultipleValid(tileEntity, 0, 49, 33, false)
                                 .addValidator(new ValidatorOreDictionary(new ItemStack(Blocks.sapling)))
                                 .addValidator(new ValidatorOreDictionary(new ItemStack(Blocks.cobblestone))));
-        this.addSlotToContainer(new SlotRemoveOnly(inventory, 1, 20, 20));
+        // Output slot
+        this.addSlotToContainer(new SlotRemoveOnly(tileEntity, 1, 109, 33));
+        
+        // Energy input slot
+        this.addSlotToContainer(new SlotEnergy(tileEntity, 2, 8, 53));
+        
+        this.addPlayerInventory(inventory, 8, 84);
+    }
+    
+    private void addPlayerInventory(InventoryPlayer inventory, int xOffset, int yOffset) {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 9; j++) {
+                this.addSlotToContainer(new Slot(inventory, j + i * 9 + 9, xOffset + j * 18, yOffset + i * 18));
+            }
+        }
+        for (int i = 0; i < 9; i++) {
+            this.addSlotToContainer(new Slot(inventory, i, xOffset + i * 18, yOffset + 58));
+        }
     }
 
     @Override
@@ -28,38 +49,42 @@ public class ContainerRareMetalExtractor extends Container {
         return tileEntity.isUseableByPlayer(player);
     }
     
-    /**
-     * Called when a player shift-clicks on a slot. You must override this or you will crash when someone does that.
-     */
-    public ItemStack transferStackInSlot(EntityPlayer player, int slotIndex) {
-        ItemStack itemstack = null;
-        Slot slot = (Slot)this.inventorySlots.get(slotIndex);
+    @Override
+    public ItemStack transferStackInSlot(EntityPlayer player, int slot) {
+        ItemStack itemStack = null;
+        Slot slotObject = (Slot) this.inventorySlots.get(slot);
 
-        if (slot != null && slot.getHasStack()) {
-            ItemStack itemstack1 = slot.getStack();
-            itemstack = itemstack1.copy();
+        if (slotObject != null && slotObject.getHasStack()) {
+            ItemStack stackInSlot = slotObject.getStack();
+            itemStack = stackInSlot.copy();
 
-            if (slotIndex < 9) {
-                if (!this.mergeItemStack(itemstack1, 9, 45, true)) {
+            if (slot <= 2) {
+                if (!this.mergeItemStack(stackInSlot, 3, 39, true)) {
                     return null;
                 }
-            } else if (!this.mergeItemStack(itemstack1, 0, 9, false)) {
-                return null;
-            }
-
-            if (itemstack1.stackSize == 0) {
-                slot.putStack((ItemStack)null);
             } else {
-                slot.onSlotChanged();
+                if (RareMetalExtractorRecipes.isValidInput(stackInSlot)) {
+                    if (!this.mergeItemStack(stackInSlot, 0, 1, false)) {
+                        return null;
+                    }
+                } else if (stackInSlot.getItem() instanceof IEnergyContainerItem) {
+                    if (!this.mergeItemStack(stackInSlot, 2, 3, false)) {
+                        return null;
+                    }
+                }
             }
 
-            if (itemstack1.stackSize == itemstack.stackSize) {
+            if (stackInSlot.stackSize == 0) {
+                slotObject.putStack(null);
+            } else {
+                slotObject.onSlotChanged();
+            }
+
+            if (stackInSlot.stackSize == itemStack.stackSize) {
                 return null;
             }
-
-            slot.onPickupFromSlot(player, itemstack1);
+            slotObject.onPickupFromSlot(player, stackInSlot);
         }
-
-        return itemstack;
+        return itemStack;
     }
 }

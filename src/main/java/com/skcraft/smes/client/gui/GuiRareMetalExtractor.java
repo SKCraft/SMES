@@ -13,6 +13,6 @@ public class GuiRareMetalExtractor extends GuiBase {
     public GuiRareMetalExtractor(TileEntityRareMetalExtractor tileEntity, InventoryPlayer inventory) {
         super(new ContainerRareMetalExtractor(tileEntity, inventory), 
               new ResourceLocation(SMES.MOD_ID, "textures/gui/machine/rareMetalExtractor.png"));
-        this.addElement(new ElementEnergyStored(this, 50, 50, tileEntity.getBattery()));
+        this.addElement(new ElementEnergyStored(this, 10, 9, tileEntity.getBattery()));
     }
 }
