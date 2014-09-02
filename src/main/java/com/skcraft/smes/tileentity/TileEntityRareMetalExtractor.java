@@ -8,6 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.IEnergyContainerItem;
 import cofh.api.tileentity.IReconfigurableSides;
+import cofh.lib.util.helpers.ItemHelper;
 
 import com.skcraft.smes.client.gui.GuiRareMetalExtractor;
 import com.skcraft.smes.inventory.container.ContainerRareMetalExtractor;
@@ -24,6 +25,9 @@ public class TileEntityRareMetalExtractor extends TileEntityEnergyInventory impl
     private int currentEnergyRequired = 0;
     private int processingEnergy = -1;
     private int energyPerTick = 1000;
+    
+    private int processedItem = 0;
+    private ItemStack currentlyProcessed;
     
     public TileEntityRareMetalExtractor() {
         super(batteryCapacity, 3);
@@ -68,6 +72,8 @@ public class TileEntityRareMetalExtractor extends TileEntityEnergyInventory impl
 
         this.currentEnergyRequired = tagCompound.getInteger("EnergyRequired");
         this.processingEnergy = tagCompound.getInteger("ProcessingEnergy");
+        this.processedItem = tagCompound.getInteger("ProcessedItem");
+        this.currentlyProcessed = ItemStack.loadItemStackFromNBT(tagCompound.getCompoundTag("CurrentlyProcessed"));
     }
 
     @Override
@@ -76,6 +82,12 @@ public class TileEntityRareMetalExtractor extends TileEntityEnergyInventory impl
 
         tagCompound.setInteger("EnergyRequired", this.currentEnergyRequired);
         tagCompound.setInteger("ProcessingEnergy", this.processingEnergy);
+        tagCompound.setInteger("ProcessedItem", this.processedItem);
+        if (this.currentlyProcessed != null) {
+            NBTTagCompound itemStackTagCompound = new NBTTagCompound();
+            this.currentlyProcessed.writeToNBT(itemStackTagCompound);
+            tagCompound.setTag("CurrentlyProcessed", itemStackTagCompound);
+        }
     }
     
     @Override
@@ -96,42 +108,71 @@ public class TileEntityRareMetalExtractor extends TileEntityEnergyInventory impl
     
     private boolean canProcess() {
         if (this.getInventory()[0] != null) {
+            // If no result exists for the current input return false
             ItemStack result = RareMetalExtractorRecipes.getOutput(this.getInventory()[0]);
-            if (result == null || this.getInventory()[0].stackSize < RareMetalExtractorRecipes.getInputSize(this.getInventory()[0])) {
+            if (result == null) {
                 return false;
             }
-            if (this.getInventory()[1] == null) {
-                return true;
-            } else if (this.getInventory()[1].isItemEqual(result)) {
-                int resultAmount = this.getInventory()[1].stackSize + result.stackSize;
-                return resultAmount <= this.getInventoryStackLimit();
+            
+            // If the current item being processed is 0 set the current item being processed to the item in the input slot
+            if (this.processedItem == 0 || this.currentlyProcessed == null) {
+                this.currentlyProcessed = this.getInventory()[0];
+            } else if (!ItemHelper.isOreNameEqual(this.getInventory()[0], ItemHelper.getOreName(this.currentlyProcessed))) {
+               // Ore dictionary check on the item vs the item being processed to allow other items of same ore dict to be processed
+               return false;
             }
+           
+            // Add the stacksize to the amount already processed and remove the itemstack
+            this.processedItem += this.getInventory()[0].stackSize;
+            this.getInventory()[0] = null;
+        }
+        
+        if (this.currentlyProcessed != null) {
+            // If no result exists for the current input return false
+            ItemStack result = RareMetalExtractorRecipes.getOutput(this.currentlyProcessed);
+            if (result == null) {
+                return false;
+            }
+            
+            // If there isn't enough processed yet return false
+            if (processedItem < RareMetalExtractorRecipes.getInputSize(this.currentlyProcessed)) {
+                return false;
+            }
+            
+            // Check if there is space to process
+            if (this.getInventory()[1] != null) {
+                if ((this.getInventory()[1].stackSize + result.stackSize) > this.getInventoryStackLimit()
+                  || !ItemHelper.isOreNameEqual(this.getInventory()[1], ItemHelper.getOreName(result))) {
+                    return false;
+                }
+            }
+            // Everything is okay! Return true
+            return true;
         }
         return false;
     }
     
     private void processItem() {
         if (this.canProcess()) {
-            ItemStack result = RareMetalExtractorRecipes.getOutput(this.getInventory()[0]);
+            ItemStack result = RareMetalExtractorRecipes.getOutput(this.currentlyProcessed);
             if (this.getInventory()[1] == null) {
                 this.getInventory()[1] = result.copy();
-            } else if (this.getInventory()[1].isItemEqual(result)) {
+            } else if (ItemHelper.isOreNameEqual(this.getInventory()[1], ItemHelper.getOreName(result))) {
                 this.getInventory()[1].stackSize += result.stackSize;
             }
 
-            this.getInventory()[0].stackSize -= RareMetalExtractorRecipes.getInputSize(this.getInventory()[0]);
-
-            if (this.getInventory()[0].stackSize <= 0) {
-                this.getInventory()[0] = null;
-            }
+            this.processedItem -= RareMetalExtractorRecipes.getInputSize(this.currentlyProcessed);
 
             this.processingEnergy = -1;
+            if (this.processedItem <= 0) {
+                this.currentlyProcessed = null;
+            }
         }
     }
     
     private int getEnergyRequired() {
-        if (this.getInventory()[0] != null) {
-            return RareMetalExtractorRecipes.getEnergyRequired(this.getInventory()[0]);
+        if (this.currentlyProcessed != null) {
+            return RareMetalExtractorRecipes.getEnergyRequired(this.currentlyProcessed);
         }
         return 0;
     }

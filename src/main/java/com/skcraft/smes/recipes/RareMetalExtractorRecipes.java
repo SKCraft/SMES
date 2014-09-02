@@ -3,6 +3,7 @@ package com.skcraft.smes.recipes;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -24,8 +25,8 @@ public class RareMetalExtractorRecipes {
        recipes.add(recipe);
     }
     
-    public static void addDictionaryRecipe(String dictionaryName, int amount, ItemStack output, int energy) {
-        addDictionaryRecipe(new ExtractorDictionaryRecipe(dictionaryName, amount, output, energy));
+    public static void addDictionaryRecipe(ItemStack input, ItemStack output, int energy) {
+        addDictionaryRecipe(new ExtractorDictionaryRecipe(input, output, energy));
     }
     
     public static List<IEnergyRecipe> getRecipes() {
@@ -64,7 +65,7 @@ public class RareMetalExtractorRecipes {
     public static void postInit() {
         if (!didPostInit) {
             // Add recipes here!
-            addDictionaryRecipe("sapling", 1400, SMESItems.dustYttrium, 1400000);
+            addDictionaryRecipe(new ItemStack(Blocks.sapling, 1400), SMESItems.dustYttrium, 1400000);
             
             didPostInit = true;
         }

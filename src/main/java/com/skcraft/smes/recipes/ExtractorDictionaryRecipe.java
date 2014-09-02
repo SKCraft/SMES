@@ -2,51 +2,40 @@ package com.skcraft.smes.recipes;
 
 import java.util.ArrayList;
 
+import cofh.lib.inventory.ComparableItemStack;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class ExtractorDictionaryRecipe implements IEnergyRecipe {
-    private String dictionaryName;
-    private int inputAmount;
+    private final ComparableItemStack input;
+    private ComparableItemStack query = new ComparableItemStack(new ItemStack(Blocks.stone));
     private ItemStack output;
     private int energy;
     
-    public ExtractorDictionaryRecipe(String dictionaryName, int inputAmount, ItemStack output, int energy) {
-        this.dictionaryName = dictionaryName;
-        this.inputAmount = inputAmount;
+    public ExtractorDictionaryRecipe(ItemStack input, ItemStack output, int energy) {
+        this.input = new ComparableItemStack(input);
         this.output = output;
         this.energy = energy;
     }
     
-    public String getDictionaryName() {
-        return dictionaryName;
-    }
-    
     public int getInputSize() {
-        return inputAmount;
+        return this.input.stackSize;
     }
     
     public boolean isInputValid(ItemStack input) {
-        ArrayList<ItemStack> items = OreDictionary.getOres(dictionaryName);
-        return items != null && items.contains(input);
+        return this.input.isItemEqual(query.set(input));
     }
     
-    /**
-     * As there are multiple inputs return a dummy (index 0)
-     * Do not trust the returned item
-     */
     public ItemStack getInput() {
-        ArrayList<ItemStack> items = OreDictionary.getOres(dictionaryName);
-        ItemStack input = items.get(0);
-        input.stackSize = inputAmount;
-        return input;
+        return this.input.toItemStack();
     }
     
     public ItemStack getOutput() {
-        return output;
+        return this.output;
     }
     
     public int getEnergy() {
-        return energy;
+        return this.energy;
     }
 }
