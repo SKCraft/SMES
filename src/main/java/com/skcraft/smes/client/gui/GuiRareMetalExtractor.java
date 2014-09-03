@@ -5,6 +5,7 @@ import net.minecraft.util.ResourceLocation;
 import cofh.lib.gui.GuiBase;
 import cofh.lib.gui.element.ElementEnergyStored;
 import cofh.lib.gui.element.TabBase;
+import cofh.lib.render.RenderHelper;
 
 import com.skcraft.smes.SMES;
 import com.skcraft.smes.inventory.container.ContainerRareMetalExtractor;
@@ -23,5 +24,12 @@ public class GuiRareMetalExtractor extends GuiBase {
     public void initGui() {
         super.initGui();
         this.addElement(new ElementEnergyStored(this, 8, 8, tileEntity.getBattery()));
+    }
+    
+    @Override
+    protected void drawGuiContainerBackgroundLayer(float partialTick, int x, int y) {
+        super.drawGuiContainerBackgroundLayer(partialTick, x, y);
+        RenderHelper.bindTexture(texture);
+        drawTexturedModalRect(guiLeft + 75, guiTop + 33, 176, 0, tileEntity.getProcessingEnergyScaled(22), 15);
     }
 }
