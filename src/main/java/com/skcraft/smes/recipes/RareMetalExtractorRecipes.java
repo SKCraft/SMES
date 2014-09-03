@@ -65,7 +65,7 @@ public class RareMetalExtractorRecipes {
     public static void postInit() {
         if (!didPostInit) {
             // Add recipes here!
-            addDictionaryRecipe(new ItemStack(Blocks.sapling, 1400), SMESItems.dustYttrium, 1400000);
+            addDictionaryRecipe(new ItemStack(Blocks.sapling, 10), SMESItems.dustYttrium, 1000);
             
             didPostInit = true;
         }

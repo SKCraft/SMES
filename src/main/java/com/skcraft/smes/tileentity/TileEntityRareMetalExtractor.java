@@ -3,11 +3,17 @@ package com.skcraft.smes.tileentity;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.IEnergyContainerItem;
 import cofh.api.tileentity.IReconfigurableSides;
+import cofh.api.transport.IItemDuct;
+import cofh.lib.util.helpers.BlockHelper;
+import cofh.lib.util.helpers.InventoryHelper;
 import cofh.lib.util.helpers.ItemHelper;
 
 import com.skcraft.smes.client.gui.GuiRareMetalExtractor;
@@ -31,6 +37,7 @@ public class TileEntityRareMetalExtractor extends TileEntityEnergyInventory impl
     
     public TileEntityRareMetalExtractor() {
         super(batteryCapacity, 3);
+        this.resetSides();
     }
     
     @Override
@@ -63,6 +70,26 @@ public class TileEntityRareMetalExtractor extends TileEntityEnergyInventory impl
 
         if (invChanged) {
             this.markDirty();
+            outputResult();
+        }
+    }
+    
+    private void outputResult() {
+        // Check all sides if output side
+        for (int i = 0; i < 6; i++) {
+            if (this.getSideConfig(i) == 1) {
+                // Grab the adjecent tile at the output side
+                TileEntity adjecent = BlockHelper.getAdjacentTileEntity(this, i);
+                
+                // Check if the adjecent tile entity is an inventory (IIventory, ISidedInventory or IItemDuct)
+                if (adjecent instanceof IInventory || adjecent instanceof ISidedInventory || adjecent instanceof IItemDuct) {
+                    // Try to output into the inventory
+                    if (InventoryHelper.isInsertion(adjecent)) {
+                        ItemStack notInserted = InventoryHelper.addToInsertion(adjecent, i, this.getInventory()[1]);
+                        this.getInventory()[1] = notInserted;
+                    }
+                }
+            }
         }
     }
     
@@ -200,6 +227,10 @@ public class TileEntityRareMetalExtractor extends TileEntityEnergyInventory impl
         return this.processingEnergy;
     }
     
+    public int getSideConfig(int side) {
+        return this.sideSlots[side];
+    }
+    
     public void setProcessingEnergy(int energy) {
         this.processingEnergy = energy;
     }
@@ -212,21 +243,33 @@ public class TileEntityRareMetalExtractor extends TileEntityEnergyInventory impl
 
     /**
      * Return the slot indeces available from the given side.
-     * Can return the slot configuration as these reflect the slots
+     * Can return the slot configuration - 1 as this'd reflect the slot id
      */
     @Override
     public int[] getAccessibleSlotsFromSide(int side) {
-        return new int[] { sideSlots[side] };
+        int sideConfig = sideSlots[side];
+        switch(sideConfig) {
+        case 0:
+            return new int[] {};
+        case 1:
+            // Input slot
+            return new int[] { 0 };
+        case 2:
+            // Output slot
+            return new int[] { 1 };
+        default:
+            return new int[] {};
+        }
     }
 
     @Override
     public boolean canInsertItem(int slot, ItemStack item, int side) {
-        return sideSlots[slot] == 0;
+        return sideSlots[side] == 1 && this.getContainer(null).getSlot(0).isItemValid(item);
     }
 
     @Override
     public boolean canExtractItem(int slot, ItemStack item, int side) {
-        return sideSlots[slot] == 1;
+        return sideSlots[side] == 2;
     }
 
     /* IReconfigurableSides */
@@ -276,8 +319,8 @@ public class TileEntityRareMetalExtractor extends TileEntityEnergyInventory impl
      */
     @Override
     public boolean resetSides() {
-        this.sideSlots[getFacing().getRotation(ForgeDirection.WEST).ordinal()] = 0;
-        this.sideSlots[getFacing().getRotation(ForgeDirection.EAST).ordinal()] = 1;
+        this.sideSlots[BlockHelper.getLeftSide(getFacing().ordinal())] = 1;
+        this.sideSlots[BlockHelper.getRightSide(getFacing().ordinal())] = 2;
         return true;
     }
 
@@ -285,11 +328,12 @@ public class TileEntityRareMetalExtractor extends TileEntityEnergyInventory impl
      * Returns the number of possible config settings for a given side.
      * 
      * In this case the following options are available for all sides:
-     * 0: Input
-     * 1: Output
+     * 0: None
+     * 1: Input
+     * 2: Output
      */
     @Override
     public int getNumConfig(int side) {
-        return 2;
+        return 3;
     }
 }
