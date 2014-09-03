@@ -43,18 +43,18 @@ public abstract class BlockMachineBase extends BlockContainer implements IDisman
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister register) {
-        this.iconsIdle[0] = register.registerIcon(SMES.RSRC_PREFIX + "machine." + this.getUnlocalizedName().replace("tile." + SMES.RSRC_PREFIX, "") + ".idle.bottom");
-        this.iconsIdle[1] = register.registerIcon(SMES.RSRC_PREFIX + "machine." + this.getUnlocalizedName().replace("tile." + SMES.RSRC_PREFIX, "") + ".idle.top");
-        this.iconsIdle[2] = register.registerIcon(SMES.RSRC_PREFIX + "machine." + this.getUnlocalizedName().replace("tile." + SMES.RSRC_PREFIX, "") + ".idle.front");
-        this.iconsIdle[3] = register.registerIcon(SMES.RSRC_PREFIX + "machine." + this.getUnlocalizedName().replace("tile." + SMES.RSRC_PREFIX, "") + ".idle.back");
-        this.iconsIdle[4] = register.registerIcon(SMES.RSRC_PREFIX + "machine." + this.getUnlocalizedName().replace("tile." + SMES.RSRC_PREFIX, "") + ".idle.left");
-        this.iconsIdle[5] = register.registerIcon(SMES.RSRC_PREFIX + "machine." + this.getUnlocalizedName().replace("tile." + SMES.RSRC_PREFIX, "") + ".idle.right");
-        this.iconsActive[0] = register.registerIcon(SMES.RSRC_PREFIX + "machine." + this.getUnlocalizedName().replace("tile." + SMES.RSRC_PREFIX, "") + ".active.bottom");
-        this.iconsActive[1] = register.registerIcon(SMES.RSRC_PREFIX + "machine." + this.getUnlocalizedName().replace("tile." + SMES.RSRC_PREFIX, "") + ".active.top");
-        this.iconsActive[2] = register.registerIcon(SMES.RSRC_PREFIX + "machine." + this.getUnlocalizedName().replace("tile." + SMES.RSRC_PREFIX, "") + ".active.front");
-        this.iconsActive[3] = register.registerIcon(SMES.RSRC_PREFIX + "machine." + this.getUnlocalizedName().replace("tile." + SMES.RSRC_PREFIX, "") + ".active.back");
-        this.iconsActive[4] = register.registerIcon(SMES.RSRC_PREFIX + "machine." + this.getUnlocalizedName().replace("tile." + SMES.RSRC_PREFIX, "") + ".active.left");
-        this.iconsActive[5] = register.registerIcon(SMES.RSRC_PREFIX + "machine." + this.getUnlocalizedName().replace("tile." + SMES.RSRC_PREFIX, "") + ".active.right");
+        this.iconsIdle[0] = register.registerIcon(SMES.RSRC_PREFIX + "machine." + this.getUnlocalizedName().replace("tile." + SMES.PREFIX, "") + ".idle.bottom");
+        this.iconsIdle[1] = register.registerIcon(SMES.RSRC_PREFIX + "machine." + this.getUnlocalizedName().replace("tile." + SMES.PREFIX, "") + ".idle.top");
+        this.iconsIdle[2] = register.registerIcon(SMES.RSRC_PREFIX + "machine." + this.getUnlocalizedName().replace("tile." + SMES.PREFIX, "") + ".idle.front");
+        this.iconsIdle[3] = register.registerIcon(SMES.RSRC_PREFIX + "machine." + this.getUnlocalizedName().replace("tile." + SMES.PREFIX, "") + ".idle.back");
+        this.iconsIdle[4] = register.registerIcon(SMES.RSRC_PREFIX + "machine." + this.getUnlocalizedName().replace("tile." + SMES.PREFIX, "") + ".idle.left");
+        this.iconsIdle[5] = register.registerIcon(SMES.RSRC_PREFIX + "machine." + this.getUnlocalizedName().replace("tile." + SMES.PREFIX, "") + ".idle.right");
+        this.iconsActive[0] = register.registerIcon(SMES.RSRC_PREFIX + "machine." + this.getUnlocalizedName().replace("tile." + SMES.PREFIX, "") + ".active.bottom");
+        this.iconsActive[1] = register.registerIcon(SMES.RSRC_PREFIX + "machine." + this.getUnlocalizedName().replace("tile." + SMES.PREFIX, "") + ".active.top");
+        this.iconsActive[2] = register.registerIcon(SMES.RSRC_PREFIX + "machine." + this.getUnlocalizedName().replace("tile." + SMES.PREFIX, "") + ".active.front");
+        this.iconsActive[3] = register.registerIcon(SMES.RSRC_PREFIX + "machine." + this.getUnlocalizedName().replace("tile." + SMES.PREFIX, "") + ".active.back");
+        this.iconsActive[4] = register.registerIcon(SMES.RSRC_PREFIX + "machine." + this.getUnlocalizedName().replace("tile." + SMES.PREFIX, "") + ".active.left");
+        this.iconsActive[5] = register.registerIcon(SMES.RSRC_PREFIX + "machine." + this.getUnlocalizedName().replace("tile." + SMES.PREFIX, "") + ".active.right");
     }
 
     @Override
