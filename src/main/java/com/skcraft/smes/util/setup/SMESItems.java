@@ -13,6 +13,12 @@ public class SMESItems {
     public static ItemStack dustBarium = null;
     public static ItemStack dustNiobium = null;
 
+    public static ItemStack componentYBCO = null;
+    public static ItemStack componentNbSn = null;
+    public static ItemStack componentSuperconductiveWire = null;
+
+    public static ItemStack itemSupermagnet = null;
+
     public static void preInit() {
         initItems();
         registerItems();
