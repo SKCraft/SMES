@@ -77,7 +77,7 @@ public class TileEntityRareMetalExtractor extends TileEntityEnergyInventory impl
     private void outputResult() {
         // Check all sides if output side
         for (int i = 0; i < 6; i++) {
-            if (this.getSideConfig(i) == 1) {
+            if (this.getSideConfig(i) == 2) {
                 // Grab the adjecent tile at the output side
                 TileEntity adjecent = BlockHelper.getAdjacentTileEntity(this, i);
                 
@@ -319,8 +319,8 @@ public class TileEntityRareMetalExtractor extends TileEntityEnergyInventory impl
      */
     @Override
     public boolean resetSides() {
-        this.sideSlots[BlockHelper.getLeftSide(getFacing().ordinal())] = 1;
-        this.sideSlots[BlockHelper.getRightSide(getFacing().ordinal())] = 2;
+        this.sideSlots[BlockHelper.getRightSide(getFacing().ordinal())] = 1;
+        this.sideSlots[BlockHelper.getLeftSide(getFacing().ordinal())] = 2;
         return true;
     }
 
