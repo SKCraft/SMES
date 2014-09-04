@@ -4,7 +4,7 @@ import net.minecraft.block.Block;
 
 import com.skcraft.smes.SMES;
 import com.skcraft.smes.block.BlockMachineExtractor;
-import com.skcraft.smes.tileentity.TileEntityRareMetalExtractor;
+import com.skcraft.smes.tileentity.TileEntityExtractor;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -34,7 +34,7 @@ public class SMESBlocks {
     }
     
     private static void registerTileEntities() {
-        GameRegistry.registerTileEntity(TileEntityRareMetalExtractor.class, "rareMetalExtractor");
+        GameRegistry.registerTileEntity(TileEntityExtractor.class, "rareMetalExtractor");
     }
 
     private static void registerRecipes() {}

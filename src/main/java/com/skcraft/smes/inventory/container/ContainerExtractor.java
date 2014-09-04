@@ -13,22 +13,23 @@ import cofh.lib.gui.slot.SlotEnergy;
 import cofh.lib.gui.slot.SlotRemoveOnly;
 
 import com.skcraft.smes.inventory.container.slot.SlotMultipleValid;
-import com.skcraft.smes.inventory.container.slot.validators.ValidatorOreDictionary;
-import com.skcraft.smes.recipes.RareMetalExtractorRecipes;
-import com.skcraft.smes.tileentity.TileEntityRareMetalExtractor;
+import com.skcraft.smes.inventory.container.slot.validators.SlotValidatorOreDictionary;
+import com.skcraft.smes.recipes.ExtractorRecipes;
+import com.skcraft.smes.tileentity.TileEntityExtractor;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ContainerRareMetalExtractor extends Container {
-    private TileEntityRareMetalExtractor tileEntity;
+public class ContainerExtractor extends Container {
+    private TileEntityExtractor tileEntity;
     
-    public ContainerRareMetalExtractor(TileEntityRareMetalExtractor tileEntity, InventoryPlayer inventory) {
+    public ContainerExtractor(TileEntityExtractor tileEntity, InventoryPlayer inventory) {
         this.tileEntity = tileEntity;
+        
         // Input slot
         this.addSlotToContainer(new SlotMultipleValid(tileEntity, 0, 49, 33, false)
-                                .addValidator(new ValidatorOreDictionary(new ItemStack(Blocks.sapling)))
-                                .addValidator(new ValidatorOreDictionary(new ItemStack(Blocks.cobblestone))));
+                                    .addValidators(tileEntity.getInputValidators()));
+        
         // Output slot
         this.addSlotToContainer(new SlotRemoveOnly(tileEntity, 1, 109, 33));
         
@@ -98,7 +99,7 @@ public class ContainerRareMetalExtractor extends Container {
                     return null;
                 }
             } else {
-                if (RareMetalExtractorRecipes.isValidInput(stackInSlot)) {
+                if (ExtractorRecipes.isValidInput(tileEntity.getType(), stackInSlot)) {
                     if (!this.mergeItemStack(stackInSlot, 0, 1, false)) {
                         return null;
                     }

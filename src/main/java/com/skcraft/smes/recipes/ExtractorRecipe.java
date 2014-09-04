@@ -32,4 +32,8 @@ public class ExtractorRecipe implements IEnergyRecipe {
     public int getEnergy() {
         return energy;
     }
+    
+    public boolean useOreDictionary() {
+        return false;
+    }
 }

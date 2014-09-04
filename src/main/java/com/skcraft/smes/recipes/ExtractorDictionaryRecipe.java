@@ -38,4 +38,8 @@ public class ExtractorDictionaryRecipe implements IEnergyRecipe {
     public int getEnergy() {
         return this.energy;
     }
+    
+    public boolean useOreDictionary() {
+        return true;
+    }
 }

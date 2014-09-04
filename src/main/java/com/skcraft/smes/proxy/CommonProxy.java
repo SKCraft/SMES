@@ -2,7 +2,7 @@ package com.skcraft.smes.proxy;
 
 import com.skcraft.smes.SMES;
 import com.skcraft.smes.client.gui.GuiHandler;
-import com.skcraft.smes.recipes.RareMetalExtractorRecipes;
+import com.skcraft.smes.recipes.ExtractorRecipes;
 import com.skcraft.smes.util.setup.SMESBlocks;
 import com.skcraft.smes.util.setup.SMESItems;
 
@@ -36,7 +36,7 @@ public class CommonProxy {
 
     public void postInit(FMLPostInitializationEvent evt) {
         SMES.log.info("Modulating post-initializaiton phase...");
-        RareMetalExtractorRecipes.postInit();
+        ExtractorRecipes.postInit();
         SMES.log.info("Post-initialization phase concluded");
     }
 }

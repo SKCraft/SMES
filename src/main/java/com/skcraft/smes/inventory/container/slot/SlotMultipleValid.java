@@ -1,6 +1,7 @@
 package com.skcraft.smes.inventory.container.slot;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -19,6 +20,16 @@ public class SlotMultipleValid extends SlotValidated {
     public SlotMultipleValid addValidator(ISlotValidator validator) {
         if (validator != null) {
             this.validators.add(validator);
+        }
+        return this;
+    }
+    
+    public SlotMultipleValid addValidators(List<ISlotValidator> validators) {
+        if (validators == null) {
+            return this;
+        }
+        for (ISlotValidator validator : validators) {
+            addValidator(validator);
         }
         return this;
     }

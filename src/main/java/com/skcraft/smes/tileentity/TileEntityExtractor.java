@@ -1,30 +1,34 @@
 package com.skcraft.smes.tileentity;
 
+import java.util.List;
+
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.IEnergyContainerItem;
 import cofh.api.tileentity.IReconfigurableSides;
 import cofh.api.transport.IItemDuct;
+import cofh.lib.gui.slot.ISlotValidator;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.InventoryHelper;
 import cofh.lib.util.helpers.ItemHelper;
 
-import com.skcraft.smes.client.gui.GuiRareMetalExtractor;
-import com.skcraft.smes.inventory.container.ContainerRareMetalExtractor;
-import com.skcraft.smes.recipes.RareMetalExtractorRecipes;
+import com.skcraft.smes.client.gui.GuiExtractor;
+import com.skcraft.smes.inventory.container.ContainerExtractor;
+import com.skcraft.smes.inventory.container.slot.validators.SlotValidatorOreDictionary;
+import com.skcraft.smes.recipes.ExtractorRecipes;
 import com.skcraft.smes.util.StringUtils;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class TileEntityRareMetalExtractor extends TileEntityEnergyInventory implements IReconfigurableSides {
+public class TileEntityExtractor extends TileEntityEnergyInventory implements IReconfigurableSides {
     private static final int batteryCapacity = 1400000;
     private int[] sideSlots = new int[6];
     
@@ -35,7 +39,27 @@ public class TileEntityRareMetalExtractor extends TileEntityEnergyInventory impl
     private int processedItem = 0;
     private ItemStack currentlyProcessed;
     
-    public TileEntityRareMetalExtractor() {
+    private ExtractorType type;
+    public static enum ExtractorType {
+        UNKNOWN,
+        RARE_METAL,
+        RARE_EARTH;
+        
+        /**
+         * @return The name with first letter capitalized, used for GUI file name
+         */
+        public String toString() {
+            String[] nameParts = super.toString().toLowerCase().split("_");
+            StringBuilder stringBuilder = new StringBuilder("");
+            for (String namePart : nameParts) {
+                String lowerCase = namePart.toLowerCase();
+                stringBuilder.append(lowerCase.substring(0, 1).toUpperCase()).append(lowerCase.substring(1));
+            }
+            return stringBuilder.toString();
+        }
+    }
+    
+    public TileEntityExtractor() {
         super(batteryCapacity, 3);
         this.resetSides();
     }
@@ -101,6 +125,14 @@ public class TileEntityRareMetalExtractor extends TileEntityEnergyInventory impl
         this.processingEnergy = tagCompound.getInteger("ProcessingEnergy");
         this.processedItem = tagCompound.getInteger("ProcessedItem");
         this.currentlyProcessed = ItemStack.loadItemStackFromNBT(tagCompound.getCompoundTag("CurrentlyProcessed"));
+        if (tagCompound.hasKey("Type")) {
+            int typeOrdinal = tagCompound.getInteger("Type");
+            if (typeOrdinal < ExtractorType.values().length) {
+                this.type = ExtractorType.values()[typeOrdinal];
+            }
+        } else {
+            this.type = ExtractorType.UNKNOWN;
+        }
     }
 
     @Override
@@ -115,6 +147,7 @@ public class TileEntityRareMetalExtractor extends TileEntityEnergyInventory impl
             this.currentlyProcessed.writeToNBT(itemStackTagCompound);
             tagCompound.setTag("CurrentlyProcessed", itemStackTagCompound);
         }
+        tagCompound.setInteger("Type", this.type.ordinal());
     }
     
     @Override
@@ -124,19 +157,19 @@ public class TileEntityRareMetalExtractor extends TileEntityEnergyInventory impl
 
     @Override
     public Container getContainer(InventoryPlayer invPlayer) {
-        return new ContainerRareMetalExtractor(this, invPlayer);
+        return new ContainerExtractor(this, invPlayer);
     }
     
     @Override
     @SideOnly(Side.CLIENT)
     public GuiContainer getGui(InventoryPlayer invPlayer) {
-        return new GuiRareMetalExtractor(this, invPlayer);
+        return new GuiExtractor(this, invPlayer);
     }
     
     private boolean canProcess() {
         if (this.getInventory()[0] != null) {
             // If no result exists for the current input return false
-            ItemStack result = RareMetalExtractorRecipes.getOutput(this.getInventory()[0]);
+            ItemStack result = ExtractorRecipes.getOutput(this.type, this.getInventory()[0]);
             if (result == null) {
                 return false;
             }
@@ -156,13 +189,13 @@ public class TileEntityRareMetalExtractor extends TileEntityEnergyInventory impl
         
         if (this.currentlyProcessed != null) {
             // If no result exists for the current input return false
-            ItemStack result = RareMetalExtractorRecipes.getOutput(this.currentlyProcessed);
+            ItemStack result = ExtractorRecipes.getOutput(this.type, this.currentlyProcessed);
             if (result == null) {
                 return false;
             }
             
             // If there isn't enough processed yet return false
-            if (processedItem < RareMetalExtractorRecipes.getInputSize(this.currentlyProcessed)) {
+            if (processedItem < ExtractorRecipes.getInputSize(this.type, this.currentlyProcessed)) {
                 return false;
             }
             
@@ -181,14 +214,14 @@ public class TileEntityRareMetalExtractor extends TileEntityEnergyInventory impl
     
     private void processItem() {
         if (this.canProcess()) {
-            ItemStack result = RareMetalExtractorRecipes.getOutput(this.currentlyProcessed);
+            ItemStack result = ExtractorRecipes.getOutput(this.type, this.currentlyProcessed);
             if (this.getInventory()[1] == null) {
                 this.getInventory()[1] = result.copy();
             } else if (ItemHelper.isOreNameEqual(this.getInventory()[1], ItemHelper.getOreName(result))) {
                 this.getInventory()[1].stackSize += result.stackSize;
             }
 
-            this.processedItem -= RareMetalExtractorRecipes.getInputSize(this.currentlyProcessed);
+            this.processedItem -= ExtractorRecipes.getInputSize(this.type, this.currentlyProcessed);
 
             this.processingEnergy = -1;
             if (this.processedItem <= 0) {
@@ -199,7 +232,7 @@ public class TileEntityRareMetalExtractor extends TileEntityEnergyInventory impl
     
     private int getEnergyRequired() {
         if (this.currentlyProcessed != null) {
-            return RareMetalExtractorRecipes.getEnergyRequired(this.currentlyProcessed);
+            return ExtractorRecipes.getEnergyRequired(this.type, this.currentlyProcessed);
         }
         return 0;
     }
@@ -229,6 +262,18 @@ public class TileEntityRareMetalExtractor extends TileEntityEnergyInventory impl
     
     public int getSideConfig(int side) {
         return this.sideSlots[side];
+    }
+    
+    public List<ISlotValidator> getInputValidators() {
+        return ExtractorRecipes.getInputValidators(this.type);
+    }
+    
+    public ExtractorType getType() {
+        return this.type;
+    }
+    
+    public void setType(ExtractorType type) {
+        this.type = type;
     }
     
     public void setProcessingEnergy(int energy) {

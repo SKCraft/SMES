@@ -4,19 +4,18 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import cofh.lib.gui.GuiBase;
 import cofh.lib.gui.element.ElementEnergyStored;
-import cofh.lib.gui.element.TabBase;
 import cofh.lib.render.RenderHelper;
 
 import com.skcraft.smes.SMES;
-import com.skcraft.smes.inventory.container.ContainerRareMetalExtractor;
-import com.skcraft.smes.tileentity.TileEntityRareMetalExtractor;
+import com.skcraft.smes.inventory.container.ContainerExtractor;
+import com.skcraft.smes.tileentity.TileEntityExtractor;
 
-public class GuiRareMetalExtractor extends GuiBase {
-    private TileEntityRareMetalExtractor tileEntity;
+public class GuiExtractor extends GuiBase {
+    private TileEntityExtractor tileEntity;
     
-    public GuiRareMetalExtractor(TileEntityRareMetalExtractor tileEntity, InventoryPlayer inventory) {
-        super(new ContainerRareMetalExtractor(tileEntity, inventory), 
-              new ResourceLocation(SMES.MOD_ID, "textures/gui/machine/rareMetalExtractor.png"));
+    public GuiExtractor(TileEntityExtractor tileEntity, InventoryPlayer inventory) {
+        super(new ContainerExtractor(tileEntity, inventory), 
+              new ResourceLocation(SMES.MOD_ID, "textures/gui/machine/extractor" + tileEntity.getType().toString() + ".png"));
         this.tileEntity = tileEntity;
     }
     
